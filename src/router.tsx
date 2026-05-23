@@ -1,53 +1,18 @@
-import {
-  createHashHistory,
-  createRouter,
-  createRoute,
-  createRootRoute,
-  Outlet,
-  Link,
-} from '@tanstack/react-router'
+import { createHashHistory, createRoute, createRootRoute, createRouter } from '@tanstack/react-router'
+import { AppLayout } from './components/AppLayout'
+import { EssaysPage } from './pages/EssaysPage'
+import { HomePage } from './pages/HomePage'
+import { ProjectsPage } from './pages/ProjectsPage'
+import { RSSPage } from './pages/RSSPage'
 
-const rootRoute = createRootRoute({
-  component: () => (
-    <div>
-      <nav style={{ padding: '1rem', borderBottom: '1px solid #ccc', display: 'flex', gap: '1rem' }}>
-        <Link to="/" activeProps={{ style: { fontWeight: 'bold' } }}>
-          Home
-        </Link>
-        <Link to="/about" activeProps={{ style: { fontWeight: 'bold' } }}>
-          About
-        </Link>
-      </nav>
-      <main style={{ padding: '1rem' }}>
-        <Outlet />
-      </main>
-    </div>
-  ),
-})
+const rootRoute = createRootRoute({ component: AppLayout })
 
-const indexRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/',
-  component: () => (
-    <div>
-      <h1>Home</h1>
-      <p>Welcome to the SPA. Navigation uses <code>/#/</code> hash routing for GitHub Pages compatibility.</p>
-    </div>
-  ),
-})
+const indexRoute = createRoute({ getParentRoute: () => rootRoute, path: '/', component: HomePage })
+const projectsRoute = createRoute({ getParentRoute: () => rootRoute, path: '/projects', component: ProjectsPage })
+const essaysRoute = createRoute({ getParentRoute: () => rootRoute, path: '/essays', component: EssaysPage })
+const rssRoute = createRoute({ getParentRoute: () => rootRoute, path: '/rss', component: RSSPage })
 
-const aboutRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/about',
-  component: () => (
-    <div>
-      <h1>About</h1>
-      <p>This is a TanStack Router + Vite SPA deployed on GitHub Pages.</p>
-    </div>
-  ),
-})
-
-const routeTree = rootRoute.addChildren([indexRoute, aboutRoute])
+const routeTree = rootRoute.addChildren([indexRoute, projectsRoute, essaysRoute, rssRoute])
 
 export const router = createRouter({
   routeTree,
