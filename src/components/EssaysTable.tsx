@@ -1,6 +1,6 @@
 import { Anchor, Table, Text } from '@mantine/core'
 import { Link } from '@tanstack/react-router'
-import { essays } from '../data/essays'
+import { useEssayFeed } from '../hooks/useEssayFeed'
 
 function fmt(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
@@ -11,7 +11,12 @@ interface EssaysTableProps {
 }
 
 export function EssaysTable({ limit }: EssaysTableProps) {
+  const { essays, loading } = useEssayFeed()
   const items = limit ? essays.slice(0, limit) : essays
+
+  if (loading && items.length === 0) {
+    return <Text fz="sm" c="dimmed">Loading essays…</Text>
+  }
 
   return (
     <>
