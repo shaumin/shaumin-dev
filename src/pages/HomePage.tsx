@@ -3,9 +3,6 @@ import { EssaysTable } from '../components/EssaysTable'
 import { ProjectsTable } from '../components/ProjectsTable'
 import { RSSTable } from '../components/RSSTable'
 import { SectionHeader } from '../components/SectionHeader'
-import { essays } from '../data/essays'
-import { projects } from '../data/projects'
-import { rssItems } from '../data/rss'
 
 const PREVIEW = 4
 
@@ -19,11 +16,11 @@ export function HomePage() {
 
       <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xl">
         <div>
-          <SectionHeader title="Projects" to="/projects" count={projects.length} />
+          <SectionHeader title="Projects" to="/projects" />
           <ProjectsTable limit={PREVIEW} />
         </div>
         <div>
-          <SectionHeader title="Essays" to="/essays" count={essays.length} />
+          <SectionHeader title="Essays" to="/essays" />
           <EssaysTable limit={PREVIEW} />
         </div>
       </SimpleGrid>
@@ -31,7 +28,7 @@ export function HomePage() {
       <Divider />
 
       <div>
-        <SectionHeader title="RSS" to="/rss" count={rssItems.length} />
+        <SectionHeader title="RSS" to="/rss" />
         <RSSTable limit={PREVIEW} />
       </div>
     </Stack>

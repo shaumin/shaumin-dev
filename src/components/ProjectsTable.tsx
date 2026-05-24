@@ -1,7 +1,7 @@
-import { ActionIcon, Anchor, Table, Text, Tooltip } from '@mantine/core'
+import { ActionIcon, Anchor, Skeleton, Table, Text, Tooltip } from '@mantine/core'
 import { IconBook, IconBrandGithub, IconExternalLink } from '@tabler/icons-react'
 import { Link } from '@tanstack/react-router'
-import { projects } from '../data/projects'
+import { useGitHubRepos } from '../hooks/useGitHubRepos'
 
 function IconLink({ href, label, icon }: { href?: string; label: string; icon: React.ReactNode }) {
   if (href) {
@@ -35,7 +35,37 @@ interface ProjectsTableProps {
 }
 
 export function ProjectsTable({ limit }: ProjectsTableProps) {
+  const { projects, loading } = useGitHubRepos()
   const items = limit ? projects.slice(0, limit) : projects
+
+  if (loading && items.length === 0) {
+    return (
+      <Table withRowBorders verticalSpacing={4} fz="sm">
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Name</Table.Th>
+            <Table.Th w={36} />
+            <Table.Th w={36} />
+            <Table.Th w={36} />
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
+          {Array.from({ length: limit ?? 4 }).map((_, i) => (
+            <Table.Tr key={i}>
+              <Table.Td><Skeleton height={14} width="60%" radius="sm" /></Table.Td>
+              <Table.Td><Skeleton height={20} width={20} radius="sm" mx="auto" /></Table.Td>
+              <Table.Td><Skeleton height={20} width={20} radius="sm" mx="auto" /></Table.Td>
+              <Table.Td><Skeleton height={20} width={20} radius="sm" mx="auto" /></Table.Td>
+            </Table.Tr>
+          ))}
+        </Table.Tbody>
+      </Table>
+    )
+  }
+
+  if (!loading && items.length === 0) {
+    return <Text fz="sm" c="dimmed">No projects found.</Text>
+  }
 
   return (
     <>
